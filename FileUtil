@@ -1,0 +1,14 @@
+public class FileUtil(){
+
+
+  public void read(){
+  
+    return;
+  }
+  
+  public void write(){
+  
+    return;
+  }
+
+}
