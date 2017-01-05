@@ -1590,6 +1590,9 @@ body .ui-tooltip {
 
 .em-require{
     color:red;
+    top: 5px;
+    position: relative;
+    padding-left: 5px;
 }
 
 
@@ -1608,7 +1611,7 @@ body .ui-tooltip {
      
         <li class="em-ui-li">
             <div class="left">
-            <label>用户名<span class="em-require">*</span></label>
+            <label>用户名</label>
             </div>
             <div class="right w50">
                 <input class="input-text" required="required" type="text" placeholder="输入用户名" name="userName" value="" autocomplete="off"></div>
@@ -1889,6 +1892,26 @@ body .ui-tooltip {
             return true;
         }
   }
+
+  function  initForm(){
+        var form = document.forms['myform'];
+        var eles=form.elements;
+        for (var i=0;i<eles.length ; i++) {
+            var ele=eles[i];
+            var name=ele.getAttribute("name");
+            var type=ele.getAttribute("type");
+            var req=ele.getAttribute("required");
+            var value=ele.value;
+            if(req=="required"){
+                $(ele).parents("li:first").find(".left:first").find("label").append("<span class='em-require'>*</span>");
+            }
+        }
+  }
+
+   $(document).ready(function(){
+        initForm();
+    });
+
 
   function submit() {
         $("#submit").click()
