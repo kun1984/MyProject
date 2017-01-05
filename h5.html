@@ -13,8 +13,6 @@
 </head>
     <style type="text/css">
 
-/* Layout helpers
-----------------------------------*/
 .ui-helper-hidden {
     display: none;
 }
@@ -1194,20 +1192,20 @@ body .ui-tooltip {
         -webkit-user-select: none;
         -ms-user-select: none;
     }
-    
+
     .ui-cmp-switcher > input {
         display: none;
     }
-    
+
     .ui-cmp-switcher > input:checked ~ label {
         background-color: #1ba8ed;
         border-radius: 6px;
     }
-    
+
     .ui-cmp-switcher > input:checked ~ label > span {
         left: 36px;
     }
-    
+
     .ui-cmp-switcher > label {
         -moz-user-select: none;
         -webkit-user-select: none;
@@ -1222,7 +1220,7 @@ body .ui-tooltip {
         position: absolute;
         top: 0;
     }
-    
+
     .ui-cmp-switcher > label > span {
         border-radius: 6px;
         display: inline-block;
@@ -1234,7 +1232,7 @@ body .ui-tooltip {
         transition: background-color, 0.2s, forwards;
         left: 2px;
     }
-    
+
     .ui-cmp-switcher > label > i {
         position: absolute;
         width: 50%;
@@ -1243,61 +1241,61 @@ body .ui-tooltip {
         font-size: 14px;
         line-height: 36px;
     }
-    
+
     .ui-cmp-switcher > label > i[on] {
         left: 0;
         font-style: normal;
     }
-    
+
     .ui-cmp-switcher > label > i[off] {
         right: 0;
         font-style: normal;
     }
-    
+
     .ui-cmp-switcher.small {
         height: 20px;
         line-height: 20px;
         width: 40px;
     }
-    
+
     .ui-cmp-switcher.small > input:checked ~ label > span {
         left: 22px;
     }
-    
+
     .ui-cmp-switcher.small > input:checked ~ label > i[on] {
         display: inline-block;
     }
-    
+
     .ui-cmp-switcher.small > input:checked ~ label > i[off] {
         display: none;
     }
-    
+
     .ui-cmp-switcher.small > label {
         width: 40px;
         right: 0;
     }
-    
+
     .ui-cmp-switcher.small > label > span {
         width: 16px;
         height: 16px;
         transition: background-color, 0.2s, forwards;
         left: 2px;
     }
-    
+
     .ui-cmp-switcher.small > label > i {
         color: white;
         line-height: 20px;
         font-size: 12px;
     }
-    
+
     .ui-cmp-switcher.small > label > i[on] {
         display: none;
     }
-    
+
     .ui-cmp-switcher.small > label > i[off] {
         display: inline-block;
     }
-    
+
 
 
 
@@ -1317,14 +1315,14 @@ body .ui-tooltip {
 
     .em-ui-textarea{
         border: 0px;
-        resize: none;   
+        resize: none;
         width: 100%;
     }
 
     .input-text{
         border:0px;
         text-align: right;
-       
+        min-width: 100px;
     }
 
 
@@ -1332,6 +1330,7 @@ body .ui-tooltip {
         cursor: pointer;
         display: block;
         width: 70px;
+        height:70px;
         text-align: center;
         float: right;
         border: 2px dashed rgb(231, 231, 235);
@@ -1341,24 +1340,27 @@ body .ui-tooltip {
     .em-ui-upload-bt:before{
         content: "+";
         color: #A9A9A9;
-        font-size: 70px;  
+        font-size: 60px;
     }
     .left{
         float: left;
-        word-wrap: break-word;
-        word-break: break-all;
-        width:20%;
+        white-space: nowrap;
+        width: 50%;
+        box-sizing: border-box;
     }
-
     .right{
         float: right;
         text-align: right;
-        word-wrap: break-word;
-        word-break: break-all;
+        white-space: nowrap;
+        width: 50%;
     }
     .w50{
-        width: 75%;
+        width: 50%;
         padding-right: 5px;
+        box-sizing: border-box;
+    }
+    .count{
+        padding-right: 15px;
     }
     .clear{
         clear: both;
@@ -1377,18 +1379,16 @@ body .ui-tooltip {
     }
     .count > i{
         float: right;
-        top: -5px;
-        z-index: 2;
         position: relative;
         font-size: 12px;
         padding-right: 5px;
-
-
+        top:-20px;
     }
     .em-ui-tip{
         line-height: 25px;
         font-size: 14px;
         padding: 5px;
+        padding-left:10px;
         border-top: 1px solid #e6e6e6;
         color: #A9A9A9;
     }
@@ -1403,6 +1403,10 @@ body .ui-tooltip {
         color: black;
         font-family: Arial, Helvetica, sans-serif;
         border-bottom: 1px solid #e6e6e6;
+        position: fixed;
+        width: 100%;
+        z-index: 999;
+        background: white;
     }
     .em-ui-body{
         margin: 0px;
@@ -1413,7 +1417,6 @@ body .ui-tooltip {
     }
     .em-ui-body > div >form{
         padding: 5px;
-        margin-top: -15px;
     }
     .em-ui-submit{
         float: right;
@@ -1423,6 +1426,7 @@ body .ui-tooltip {
         cursor: pointer;
         background: white;
         color: rgb(27, 168, 237);
+        padding-right: 15px;
     }
     .em-ui-back{
         font-size: 14px;
@@ -1455,15 +1459,18 @@ body .ui-tooltip {
     .em-ui-switch-div{
         line-height: 40px;
     }
+    .em-ui-li:first-child{
+       margin-top: 40px;
+    }
     .em-li-textarea{
         list-style: none;
         padding-left: 5px;
         overflow: hidden;
         padding: 5px;
         background: white;
-        height:90px;
+        height:95px;
         border: 0px;
-        resize: none;   
+        resize: none;
         width: 100%;
     }
     .em-li-upload{
@@ -1485,19 +1492,24 @@ body .ui-tooltip {
         color: #A9A9A9;
         font-size: 12px
     }
-    
-   .em-select{ 
+
+   .em-select{
         background-color:white;
         border:0px;
         padding-right: 10px;
     }
-
+   .em-min-select{
+        background-color:white;
+        border:0px;
+        padding-right: 0px;
+    }
 .ui-cmp-checkbox {
     position: relative;
     display: inline-block;
     cursor: pointer;
     height: 30px;
     line-height: 30px;
+    min-width:50px;
 }
 
 .ui-cmp-checkbox > label {
@@ -1528,7 +1540,9 @@ body .ui-tooltip {
     height: 15px;
     width: 15px;
     border-radius: 7px;
-    margin-right: 5px;
+    margin-right: 10px;
+    position: relative;
+    top: 3px;
 }
 
 .ui-cmp-checkbox > input ~ span.font-checked {
@@ -1536,8 +1550,10 @@ body .ui-tooltip {
     height: 15px;
     width: 15px;
     border-radius: 7px;
-    margin-right: 5px;
+    margin-right: 10px;
     display: inline-block;
+    position: relative;
+    top: 3px;
 }
 
 .ui-cmp-checkbox > input:checked ~ span.font-uncheck {
@@ -1571,10 +1587,6 @@ body .ui-tooltip {
 .ui-cmp-checkbox.disable > input:checked ~ span.font-checked {
     color: #999;
 }
-
-
-
-/*# sourceMappingURL=checkbox.css.map */
 
 
 
