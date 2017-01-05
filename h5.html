@@ -1,3 +1,8 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -1590,7 +1595,6 @@ body .ui-tooltip {
 
 .em-require{
     color:red;
-    top: 5px;
     position: relative;
     padding-left: 5px;
 }
@@ -1614,7 +1618,7 @@ body .ui-tooltip {
             <label>用户名</label>
             </div>
             <div class="right w50">
-                <input class="input-text" required="required" type="text" placeholder="输入用户名" name="userName" value="" autocomplete="off"></div>
+                <input class="input-text w50" required="required" type="text" placeholder="输入用户名" name="userName" value="" autocomplete="off"></div>
         </li>
         
         <li class="em-ui-li">
@@ -1622,7 +1626,7 @@ body .ui-tooltip {
                 <label>密码</label>
             </div>
             <div class="right w50">
-                <input  class="input-text" type="password" placeholder="输入密码" required="required" name="password" />
+                <input  class="input-text w50" type="password" placeholder="输入密码" required="required" name="password" />
             </div>
         </li>
         
@@ -1639,7 +1643,7 @@ body .ui-tooltip {
                 <label>邮箱</label>
             </div>
             <div class="right w50">
-                <input  class="input-text" type="email" placeholder="输入邮箱"  required="required" name="email" />
+                <input  class="input-text w50" type="email" placeholder="输入邮箱"  required="required" name="email" />
             </div>
         </li>
         <li class="em-ui-li">
@@ -1648,7 +1652,7 @@ body .ui-tooltip {
                 <label>手机号</label>
             </div>
             <div class="right w50">
-                <input  class="input-text" type="number" placeholder="输入手机号"  required="required" name="phone" />
+                <input  class="input-text w50 " type="number" placeholder="输入手机号"  required="required" name="phone" />
             </div>
         </li>
         <li class="em-ui-li">
@@ -1743,7 +1747,6 @@ body .ui-tooltip {
   
       var o=$("input[type=date]");
       o.click(function(){
-          console.log(this)
       });
       o.focus(function () {
           this.removeAttribute("placeholder")
@@ -1758,25 +1761,7 @@ body .ui-tooltip {
       
       
   });
-  $(document).ready(function(){
-  
-      var o=$("input[type=date]");
-      o.click(function(){
-          console.log(this)
-      });
-      o.focus(function () {
-          this.removeAttribute("placeholder")
-      });
-      o.blur(function(){
-          if(this.value==""){
-              this.setAttribute("placeholder","年/月/日");
-          }else{
-              this.setAttribute("placeholder","");
-          }
-      });
-      
-      
-  });
+
 
 
 
@@ -1838,7 +1823,7 @@ body .ui-tooltip {
                     result = '<div  class="picture"><img class="preview" src="'+this.result+'" alt=""/></div>';   
                     div = document.createElement('div');   
                     div.innerHTML = result;
-                    document.getElementById('pictures').appendChild(div);  　　
+                    document.getElementById('pictures').appendChild(div);
                 }   
             }   
         } 
@@ -1887,6 +1872,7 @@ body .ui-tooltip {
             var req=ele.getAttribute("required");
             var value=ele.value;
             if(req=="required"&&$.trim(value).length==0){
+                alert(ele.getAttribute("placeholder"))
                 return false;
             }
             return true;
@@ -1910,6 +1896,10 @@ body .ui-tooltip {
 
    $(document).ready(function(){
         initForm();
+        var isSupport = easemob.isSupportH5();
+        if(!isSupport){
+            $(".em-ui-h1").css("position","absolute")
+        }
     });
 
 
