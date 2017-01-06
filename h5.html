@@ -1852,7 +1852,10 @@ body .ui-tooltip {
    $(document).ready(function(){
       var userAgent = navigator.userAgent; 
       if (userAgent.indexOf("Chrome") == -1){
-         $( "input[type=date]" ).datepicker({dateFormat: 'yy/mm/dd' });
+         $("input[type=date]" ).datepicker({dateFormat: 'yy/mm/dd' });
+         $("input[type=date]").val(getCurrentDay());
+         $("input[type=date]").setAttribute("placeholder","");
+         
       }
     });
 
@@ -1898,7 +1901,8 @@ body .ui-tooltip {
         initForm();
         var isSupport = easemob.isSupportH5();
         if(!isSupport){
-            $(".em-ui-h1").css("position","absolute")
+            $(".em-ui-h1").css("position","absolute");
+       
         }
     });
 
@@ -1910,6 +1914,21 @@ body .ui-tooltip {
   function goback() {
         easemob.closeWindow();
   }
+  
+  function getCurrentDay(){
+      var date=new Date();
+      var year=date.getFullYear();
+      var month=date.getMonth()+1;
+      var day=date.getDate();
+      if(month<10){
+          month="0"+month;
+      }
+      if(day<10){
+          day="0"+day;
+      }
+      return year+"/"+month+"/"+day;
+  }
+  
 
 </script>
 </html>
