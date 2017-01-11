@@ -1,5 +1,5 @@
-﻿require(['jquery','bts','ycb','modal','tmpl','face','Sockjs','dFormat'],
-		function($,bootstrap,ycb,modal,tmpl,face,Sockjs) {
+﻿require(['jquery','Sockjs'],
+		function($,Sockjs) {
 
   var service_ip = "http://"+window.location.host;
   var conn;
@@ -12,64 +12,43 @@
   var hbInter = {};
   var hbTime = 2;//秒
 
+  var ssid;
+  var sockPath;
+
   $(function(){
-	  //初始化全局变量
-	  top['ycb']={emp:{},query:{},timer:{},cc:{active:{}}};
 
 	  //登陆环信服务
 	  $.post(service_ip+'/login',{
-		  username:'270449954@qq.com',
-		  password:'piji888',
+		  username:'xxx', //环信账号用户名
+		  password:'xxx',//环信账密码
 		  status:'Online'
 	  },function(data,status){
-		  //初始化坐席数据
-		  $.extend(top.ycb.emp,data.agentUser);
-		  top.ycb.cc = {active:{},signIn:false,mapping:{}};
-		  //初始化其他坐席数据
 		  initData();
-		  getAnsData();
 	  });
 
-
-	  bindEvent();
 
   });
 
     //初始化坐席环信数据
 	function initData(){
 		$.get(service_ip+'/home/initdata',{},function(data,status){
-			top.ycb.emp.sessionId = data.sessionId;
-			top.ycb.emp.resource = data.resource;
+			ssid = data.sessionId;
+			sockPath = data.resource;
 			//启动socket
 			start();
 		});
 	}
 	
 
-	//监听事件
-	function handleEvent(param){
-		console.log(ycb.jsonToString(param));
+	function handleEvent(){
+		//...自己业务逻辑
 	}
-	//获取当前会话列表
-	function getAnsData(){
-		//登陆环信服务
-		$.get(service_ip+'/v1/Agents/me/Visitors',{},function(data,status){
-			if(status == 'success'){
-				
-			}else{
-
-			}
-
-		});
-	}
-
 	
 	//建立socket连接
 	function Connection(){
 
 		var me = this;
-		console.log("ssid:"+top.ycb.emp.sessionId);
-		this.sock = new Sockjs(service_ip+"/push?chid=" + top.ycb.emp.sessionId);
+		this.sock = new Sockjs(service_ip+"/push?chid=" + ssid);
 		this.sock.onopen = function(){
 			startHeartBeat(1000*hbTime);
 			clearTimeout(openTimer);
@@ -78,6 +57,53 @@
 		this.sock.onmessage = function(resp){
 			//resp.data  消息体
 			var dat = eval('('+resp.data+')') || {};
+
+
+	       // auth 1
+			if(dat.authentication){
+				auth_step1();
+			}
+
+			// auth 2
+			else if(dat.authorize){
+				auth_step2();
+			}
+
+			var that=this;
+			function auth_step1(){
+				switch(dat.authentication){
+				case "token":
+					that.send(JSON.stringify({
+						token:	ssid
+					}));
+					break;
+				
+				case "failed":
+					that.close();
+					break;
+
+				case "ok":
+					break;
+				}
+			}
+
+			function auth_step2(){
+				switch(dat.authorize){
+				case "path":
+					that.send(JSON.stringify({
+						path:	sockPath
+					}));
+					break;
+
+				case "failed":
+					that.close();
+					break;
+
+				case "ok":
+					break;
+				}
+			}
+
 			handleEvent(dat);
 		};
 
@@ -102,9 +128,7 @@
 
 		this.heartbeat = function(){
 			if(this.sock){
-
-				var hb = ycb.jsonToString({keepalive:  top.ycb.emp.resource});
-				console.log(hb);
+				var hb = JSON.stringify({keepalive: sockPath});
 				this.send(hb);
 			}
 		};
@@ -116,6 +140,10 @@
 		};
 
 	}
+
+
+
+
 	//创建连接
 	function createConnection(){
 		if(conn){
