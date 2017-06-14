@@ -1413,12 +1413,13 @@ body .ui-tooltip {
         margin: 0px;
     }
 
-    .em-ui-body > div{
+    .em-ui-body >div > div{
         margin: 0px;
     }
-    .em-ui-body > div >form{
+    .em-ui-body > div > div >form{
         padding: 5px;
     }
+
     .em-ui-submit{
         float: right;
         height: 35px;
@@ -1472,7 +1473,6 @@ body .ui-tooltip {
         height: 95px;
         border: 0px;
         resize: none;
-        width: 100%;
         border-bottom: 1px solid #e6e6e6;
     }
     .em-li-upload{
@@ -1505,6 +1505,52 @@ body .ui-tooltip {
         border:0px;
         padding-right: 0px;
     }
+
+
+
+
+    .em-modal{
+        opacity: 0.4;
+        fill: none;
+        stroke: rgb(0, 0, 0); 
+        height: 100%;
+        width: 100%;
+        z-index: 1000;
+        position: absolute;
+        top: 0px;
+        background: black;
+    }
+    .em-read{
+        z-index: 1001;
+        width: 100%;
+        position: absolute;
+
+    }
+    @media screen and (max-width:400px) {
+        .em-read{
+             width: 100%;
+        }
+    } 
+    @media screen and (min-width:710px)  {
+        .em-read{
+             width: 50%;
+             left: 25%;
+        }
+    } 
+    .em-foot{
+        width: 100%;
+        height: 50px;
+        background: white;
+    }   
+    .hide{
+        display: none;
+    }
+
+
+
+
+
+
 .ui-cmp-checkbox {
     position: relative;
     display: inline-block;
@@ -1596,15 +1642,16 @@ body .ui-tooltip {
 }</style>
 </head>
 <body class="em-ui-body">
-    <header>
-        <h1 class="em-ui-h1">
+    <div edit class="em-edit">
+        <header>
+            <h1 class="em-ui-h1">
             c
-            <button onclick="submit()" class="em-ui-submit">提交</button>
+            <button onclick="preSubmit()" class="em-ui-submit">提交</button>
             <button onclick="goback()" class="em-ui-back">返回</button>
         </h1>
-    </header>
-    <div>
-        <img  id="temp" style="display:none;">
+        </header>
+        <div>
+        <img id="temp" style="display:none;">
         <form enctype="multipart/form-data" name="myform" action="http://sandbox.kefu.easemob.com/v1/Tenants/5318/robots/htmlForm/upload?token=f8f2198a-62ae-4961-a63c-75919ae08332" method="post" onsubmit="return checkForm();">
             <li class="em-ui-li">
                 <div class="left">
@@ -1622,7 +1669,8 @@ body .ui-tooltip {
                     </label>
                 </div>
                 <div class="right w50">
-                    <input class="input-text w100" required="required" type="text" name="d" placeholder="s"></div>
+                    <input class="input-text w100" required="required" type="text" name="d" placeholder="s">
+                </div>
             </li>
             <li class="em-ui-li">
                 <div class="left">
@@ -1670,12 +1718,12 @@ body .ui-tooltip {
                         <input type="hidden" name="xingbie" value="否">
                         <input id="xingbie" type="checkbox" data-type="radio">
                         <span class="font-uncheck" name="em-radio" onclick="checkRadio(this)"></span>
-                        <label for="xingbie" onclick="checkRadio(this)" value="是">是</label>
+                    <label for="xingbie" onclick="checkRadio(this)" value="是">是</label>
                     </span>
                     <span class="ui-cmp-checkbox">
                         <input type="checkbox" data-type="radio">
                         <span class="font-checked" name="em-radio" onclick="checkRadio(this)"></span>
-                        <label for="xingbie" onclick="checkRadio(this)" value="否">否</label>
+                    <label for="xingbie" onclick="checkRadio(this)" value="否">否</label>
                     </span>
                 </div>
             </li>
@@ -1700,10 +1748,23 @@ body .ui-tooltip {
                     </label>
                 </div>
                 <div class="right w50">
-                    <input class="input-text" required="required" type="date" name="shijian" placeholder="年/月/日"></div>
+                    <input class="input-text" required="required" type="date" name="shijian" placeholder="年/月/日">
+                </div>
             </li>
-            <input type="submit" id="submit" value="" style="display: none;"></form>
+            <input type="submit" id="submit" value="" style="display: none;">
+        </form>
+        </div>
     </div>
+    <div read class="em-read hide">
+        <div list></div>
+        <div foot class="em-foot">
+            <button onclick="onEnsure()" class="em-ui-submit">确定</button>
+            <button onclick="onCancel()" class="em-ui-back" style="float: right;">取消</button>
+        </div>
+    </div>
+    <div modal class="em-modal hide">
+    </div>
+
     <script type="text/javascript">
   function compress(source_img_obj, quality, output_format) {
         var mime_type = "image/jpeg";
@@ -1865,8 +1926,8 @@ $(function() {
                     alert(ele.getAttribute("placeholder"))
                     return false;
                 }
-                return true;
             }
+            return true;
       }
 
 
@@ -1922,7 +1983,7 @@ $(function() {
     }
 
     function goback() {
-    easemob.closeWindow();
+        easemob.closeWindow();
     }
 
     function  initForm(){
@@ -1962,6 +2023,69 @@ $(function() {
         return year+"/"+month+"/"+day;
     }
 
+      function confirmData(){
+            var readDiv=$("div[read]");
+            var editDiv=$("div[edit]");
+            var modalDiv=$("div[modal]");
+            var list=$("div[list]");
+            editDiv.addClass("hide");
+            readDiv.removeClass("hide");
+            modalDiv.removeClass("hide");
+            list.html("");
+            var eles=$("form>li");
+            for(var i=1;i<eles.size();i++){//除去表头
+                var li=$(eles[i]);
+                var item="";
+                var className=li.attr("class");
+                var newDom=$(li[0].outerHTML);//不能改变原来dom元素
+                newDom.find(".em-require").addClass("hide");
+                switch(className){
+                    case "em-ui-li":
+                        var val="";
+                        var ele=li.find("input");  
+                        if(ele.size()>0){
+                            val=ele.val();
+                        }else {
+                            ele=li.find("select");
+                            if(ele.size()>0){
+                                val=ele.val();
+                            }
+                        }
+                        newDom.find(".right").html("").append("<span>"+val+"</span>")
+                        list.append(newDom);
+                        break;
+                    case "em-li-upload":
+                        newDom.find(".em-ui-upload-bt").addClass("hide");
+                        list.append(newDom);
+                        break;
+                    case "em-li-textarea":
+                        var val=li.find("textarea").val();
+                        newDom.find("textarea").attr("readonly",true).val(val);
+                        list.append(newDom);
+                        break;        
+                }
+            }
+ 
+      }
+
+      function  onCancel(){
+           $("div[read]").addClass("hide");
+           $("div[edit]").removeClass("hide");
+           $("div[modal]").addClass("hide");
+      }
+
+      function  onEnsure(){
+        $("#submit").click()
+      }
+
+      function preSubmit() {
+            var result= checkForm();
+            if(!result){
+                return;
+            }else{
+               confirmData(); 
+            }
+      }
 
 </script>
     <div id="cntvlive2-is-installed"></div>
