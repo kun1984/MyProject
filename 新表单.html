@@ -1539,10 +1539,11 @@ body .ui-tooltip {
         }
     } 
     .em-foot{
-        width: 100%;
+        width: inherit;
         height: 50px;
         background: white;
         border-bottom: 1px solid #e6e6e6;
+        position: fixed;
     }   
     .hide{
         display: none;
@@ -2042,6 +2043,7 @@ $(function() {
                 var className=li.attr("class");
                 var newDom=$(li[0].outerHTML);//不能改变原来dom元素
                 newDom.find(".em-require").addClass("hide");
+
                 switch(className){
                     case "em-ui-li":
                         var val="";
@@ -2054,20 +2056,23 @@ $(function() {
                                 val=ele.val();
                             }
                         }
-                        if(isFirstText){
-                            newDom.css("margin-top","0px");
-                            isFirstText=false; 
-                        }
+               
                         newDom.find(".right").html("").append("<span>"+val+"</span>")
                         list.append(newDom);
                         break;
                     case "em-li-upload":
                         newDom.find(".em-ui-upload-bt").addClass("hide");
+                        if(i==1){
+                            newDom.css("margin-top","50px");
+                        }
                         list.append(newDom);
                         break;
                     case "em-li-textarea":
                         var val=li.find("textarea").val();
                         newDom.find("textarea").attr("readonly",true).val(val);
+                        if(i==1){
+                            newDom.css("margin-top","0px");
+                        }
                         list.append(newDom);
                         break;        
                 }
