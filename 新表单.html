@@ -1642,7 +1642,14 @@ body .ui-tooltip {
     color:red;
     position: relative;
     padding-left: 5px;
-}</style>
+}
+
+.count.red i{
+    color: red;
+}
+
+
+</style>
 </head>
 <body class="em-ui-body">
     <div edit class="em-edit">
@@ -1908,8 +1915,9 @@ $(function() {
                 var total=countNode.text().split("/")[1];
                 countNode.text(len+"/"+total);
                 if(len>total){
-                    this.value=this.value.substring(0,total);
-                    len=total;
+                    $(this).parent().addClass("red");
+                }else{
+                    $(this).parent().removeClass("red");
                 }
                 countNode.text(len+"/"+total);
              });
@@ -1926,9 +1934,22 @@ $(function() {
                 var type=ele.getAttribute("type");
                 var req=ele.getAttribute("required");
                 var value=ele.value;
+                console.log(name,type)
                 if(req=="required"&&$.trim(value).length==0){
                     alert(ele.getAttribute("placeholder"))
                     return false;
+                }
+                if(ele.tagName.toLowerCase() =="textarea"){
+                    try{
+                        var iNode=$(ele).next();
+                        var total=iNode.text().split("/")[1];
+                        if($(ele).val().length>total){
+                            alert(ele.getAttribute("placeholder")+"超长")
+                            return false; 
+                        }
+                    }catch(e){
+
+                    }
                 }
             }
             return true;
